@@ -5,14 +5,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-   <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false'></script>
-  <script type="text/javascript" src="instagram.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker3.css">
+  <link rel="stylesheet" type="text/css" href="css/instagram.css">
+  <link rel="stylesheet" href="jQRangeSlider/css/iThing.css" type="text/css" />
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  
+  <script src="jQueryUI/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="jQRangeSlider/jQDateRangeSlider-min.js"></script>
+   <script type="text/javascript" src='js/map.js'></script>
+  <script type="text/javascript" src="js/instagram.js"></script>
+
+  <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
 </head>
 <body>
 
@@ -27,19 +32,27 @@
     
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="background-color:#F2F2F2">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Event Information</h4>
+          <h4 class="modal-title" ><em><b>Event Information</b></h4>
           <p></p> 
         </div>
         <div class="modal-body" >
           <div class="form-group" >
               <label for="tagsTxtBox" class="control-label">Tags : </label>
-              <input type="text" width="150px" placeholder="provide tags here" id="tagsTxtBox">
+              <input type="text" class="tagsTxtBox" width="150px" placeholder="provide tags here" value="1989worldtour" id="tagsTxtBox">
           </div>
+          <div class='input-group date' id='datetimepicker1'>
+                <label for="eventDate" class="control-label"> Event Date : &nbsp;</label>
+                <input  type="text" placeholder="click to select Event Date " value="09/25/2015" id="eventStartDate" />
+
+                    <span class="glyphicon glyphicon-calendar" style="padding-left:4px;" border="1px solid"></span>
+                
+          </div>
+
           <div class='input-group date' id='datetimepicker2'>
                 <label for="eventDate" class="control-label"> Event Date : &nbsp;</label>
-                <input  type="text" placeholder="click to select Event Date "  id="eventDate" />
+                <input  type="text" placeholder="click to select Event Date " value="09/28/2015"  id="eventEndDate" />
 
                     <span class="glyphicon glyphicon-calendar" style="padding-left:4px;" border="1px solid"></span>
                 
@@ -48,27 +61,18 @@
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">Close</button>
-          <button type="button" class="btn btn-info btn-default" data-dismiss="modal" id="submitBtn" >Submit</button>
+          <button type="button" class="btn btn-default close-btn" data-dismiss="modal" id="closeBtn"><b>Close</button>
+          <button type="button" class="btn btn-info btn-default" data-dismiss="modal" id="submitBtn" ><b>Submit</button>
         </div>
       </div>
       
     </div>
   </div>
-  <p> Evets in the Map </p>
-  <div id="map" style="width:100%; height:500px"></div>
+  <div id="dateRangeSlider">
 </div>
 
-<style type="text/css">
-.form-group > label{
-  width: 15%;
-}
- #map { height: 100%; }
-.input-group > label{
-  
-}
-</style>
-
+<p></p> <p> </p>
+<div id="map" style="width:100%; height:500px"></div> 
 
 
 </body>

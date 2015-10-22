@@ -1,0 +1,19 @@
+.form-group > label{
+  width: 15%;
+}
+ #map { height: 100%; 
+  padding-top: 20px}
+
+.txtBox {
+  border:1px solid #d1c7ac;
+  width: 230px;
+  color:#333333;
+  padding:3px;
+  margin-right:4px;
+  margin-bottom:8px;
+  font-family:tahoma, arial, sans-serif;
+}
+
+.close-btn:hover{
+     background: #FF4000 ;
+}
