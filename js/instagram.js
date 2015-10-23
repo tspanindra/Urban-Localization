@@ -1,6 +1,40 @@
 var  MarkersArr = [];
+var pinData = [];
 
 $(document).ready(function(){  
+  $("#dateRangeSlider").bind("valuesChanged", function(e, data){
+    var minDate = new Date(data.values.min);
+    var maxDate = new Date(data.values.max);
+
+    var month = maxDate.getMonth() +1;
+    if(month < 10) {
+      month = "0"+ month;
+    }
+    var day = maxDate.getDate();
+    if(day < 10) {
+      day = "0" + day;
+    }
+    var minFormat = month + "/" + day + "/" + minDate.getFullYear();
+    var maxFormat = month +"/" + day + "/" + maxDate.getFullYear();
+    
+    deleteMarkers();
+
+     //alert(minFormat + " : " + maxFormat);
+     // alert(JSON.stringify(pinData));
+    // alert(JSON.stringify(pinData[minFormat]));
+
+    var markerData = pinData[maxFormat];
+
+    if(markerData!= null && markerData.length > 0) {
+        for(marker in markerData) {                  
+          latitude = markerData[marker]["lat"]              
+          longitude = markerData[marker]["long"]
+          title = markerData[marker]["count"]          
+          addMarkers(latitude, longitude, title.toString());             
+        }  
+      }
+  });
+
 	$('#dateRangeSlider').dateRangeSlider({
       bounds:{
             min: new Date(2013, 0, 1),
@@ -46,15 +80,17 @@ $(document).ready(function(){
 		  	  .done(function( data ) {
 		      //findEvents();
 		      findEvents();
-		  });	
+		    });	
+        var nextDate = new Date(startDate);
+        nextDate.setDate(nextDate.getDate() + 1);
 
 		    $("#dateRangeSlider").dateRangeSlider(
             "bounds", new Date(startDate), new Date(endDate));
 
-          $("#dateRangeSlider").dateRangeSlider(
-            "values", new Date(startDate), new Date(endDate));
+          $("#dateRangeSlider").dateRangeSlider(          
+            "values", new Date(startDate), nextDate);
                       
-    });        
+      });        
 });
 
 ///To get a cluster information and to show pins on the Map.
@@ -69,20 +105,29 @@ function findEvents() {
 		url: "http://instalocalize.com:5000/find_events",
 		data: { "filename": tag, "fromdate" : fromDatePicker.val(), "todate" : toDatePicker.val()},
 	 	dataType: "json",
-		success: function( data ) {		
-    alert(JSON.stringify(data));	
-			keys = Object.keys(data["data"])		
+		success: function( data ) {		 
+      pinData = data["data"];
+			keys = Object.keys(data["data"]);
+      var firstData = false;
+
 			for(key in keys) {
 				markerData = data["data"][keys[key]]
-				for(marker in markerData) {
-					latitude = markerData[marker]["lat"]
-					longitude = markerData[marker]["long"]
-					title = markerData[marker]["count"]					
-					addMarkers(latitude, longitude, title.toString());
-			
-				}				
+        if(markerData.length > 0) {
+          for(marker in markerData) {                  
+            latitude = markerData[marker]["lat"]              
+            longitude = markerData[marker]["long"]
+            title = markerData[marker]["count"]          
+            addMarkers(latitude, longitude, title.toString()); 
+            if(title != null) {
+                firstData = true
+            }
+          }  
+        }
+        if(firstData == true) {
+          break;
+        }							
 			}
-	  	}		  
+	  }		  
 	});	
 }
 
