@@ -22,7 +22,8 @@ def clustering_dbscan(pts):
 	for i in range(n):
 		for j in range(n):
 			X[i,j]=haversine(pts[i][1],pts[i][0],pts[j][1],pts[j][0])
-	dbsc = DBSCAN(eps=20, min_samples=30,metric='precomputed',algorithm='auto').fit(X) 
+	# dbsc = DBSCAN(eps=20, min_samples=30,metric='precomputed',algorithm='auto').fit(X) 
+	dbsc = DBSCAN(eps=5,metric='precomputed',algorithm='auto').fit(X) 
 	labels=dbsc.labels_	
 	return labels
 

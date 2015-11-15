@@ -11,6 +11,7 @@ from sklearn.cluster import DBSCAN
 
 from flask import Flask, request
 from flask.ext.cors import CORS
+from clustering import find_events
 
 app = Flask(__name__)
 CORS(app)
@@ -100,7 +101,8 @@ def clustering_dbscan(pts):
 	for i in range(n):
 		for j in range(n):
 			X[i,j]=haversine(pts[i][1],pts[i][0],pts[j][1],pts[j][0])
-	dbsc = DBSCAN(eps=20, min_samples=30,metric='precomputed',algorithm='auto').fit(X) 
+	#dbsc = DBSCAN(eps=20, min_samples=30,metric='precomputed',algorithm='auto').fit(X) 
+	dbsc = DBSCAN(eps=5,metric='precomputed',algorithm='auto').fit(X) 
 	labels=dbsc.labels_	
 	return labels
 
@@ -125,9 +127,12 @@ def parse_input(filename):
 
 
 
-@app.route("/find_events",  methods=['POST'])	
-def find_events():
+@app.route("/find_events_backend",  methods=['POST'])	
+def find_events_backend():
 	filename = request.form['filename']
+	data = find_events(filename)
+	return data
+	'''
 	fromdate = request.form['fromdate']
 	todate = request.form['todate']
 
@@ -195,6 +200,7 @@ def find_events():
 				printer_new[k].append(d)
 	output = {'data':printer_new}				
 	return json.dumps(output)
+	'''
 
 
 def find_events1(filename, fromdate, todate):

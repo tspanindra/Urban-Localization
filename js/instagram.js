@@ -3,6 +3,7 @@ var pinData = [];
 
 $(document).ready(function(){  
   $("#dateRangeSlider").bind("valuesChanged", function(e, data){
+    
     var minDate = new Date(data.values.min);
     var maxDate = new Date(data.values.max);
 
@@ -14,23 +15,17 @@ $(document).ready(function(){
     if(day < 10) {
       day = "0" + day;
     }
-    var minFormat = month + "/" + day + "/" + minDate.getFullYear();
-    var maxFormat = month +"/" + day + "/" + maxDate.getFullYear();
-    
+    var minFormat = month + "-" + day + "-" + minDate.getFullYear();
+    var maxFormat = month +"-" + day + "-" + maxDate.getFullYear();    
     deleteMarkers();
 
-     //alert(minFormat + " : " + maxFormat);
-     // alert(JSON.stringify(pinData));
-    // alert(JSON.stringify(pinData[minFormat]));
-
-    var markerData = pinData[maxFormat];
-
+    var markerData = pinData[maxFormat];  
+  
     if(markerData!= null && markerData.length > 0) {
         for(marker in markerData) {                  
           latitude = markerData[marker]["lat"]              
-          longitude = markerData[marker]["long"]
-          title = markerData[marker]["count"]          
-          addMarkers(latitude, longitude, title.toString());             
+          longitude = markerData[marker]["lng"]              
+          addMarkers(latitude, longitude);             
         }  
       }
   });
@@ -102,23 +97,26 @@ function findEvents() {
 	
 	$.ajax({
 		type: "POST",
-		url: "http://instalocalize.com:5000/find_events",
+		url: "http://instalocalize.com:5000/find_events_backend",
 		data: { "filename": tag, "fromdate" : fromDatePicker.val(), "todate" : toDatePicker.val()},
 	 	dataType: "json",
-		success: function( data ) {		 
+		success: function( data ) {		
+      //alert(JSON.stringify(data));
       pinData = data["data"];
+      //alert(JSON.stringify(pinData));
 			keys = Object.keys(data["data"]);
+      alert(keys);
       var firstData = false;
 
 			for(key in keys) {
-				markerData = data["data"][keys[key]]
+				markerData = data["data"][keys[key]]       
         if(markerData.length > 0) {
           for(marker in markerData) {                  
             latitude = markerData[marker]["lat"]              
-            longitude = markerData[marker]["long"]
-            title = markerData[marker]["count"]          
-            addMarkers(latitude, longitude, title.toString()); 
-            if(title != null) {
+            longitude = markerData[marker]["lng"]
+            //title = markerData[marker]["count"]          
+            addMarkers(latitude, longitude); 
+            if(firstData == false) {
                 firstData = true
             }
           }  
@@ -140,11 +138,11 @@ function initMap() {
   });
 }
 
-function addMarkers(latitude, longitude, title) {
+function addMarkers(latitude, longitude) {
 	var marker = new google.maps.Marker({
     	position: new google.maps.LatLng(latitude, longitude),
       	map: map,
-      	title: title,
+      	title: "",
       	draggable: true
   	});
 
